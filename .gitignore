@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Django
+*.log
+*.pot
+*.pyc
+*.mo
+db.sqlite3
+media/
+staticfiles/
+
+# Environments
+.env
+.env.*
+*.env
+*.venv
+venv/
+ENV/
+env/
+.venv/
+Pipfile.lock
+poetry.lock
+
+# VS Code / PyCharm
+.vscode/
+.idea/
+
+# Coverage / testing
+.coverage
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.tox/
+pytest_cache/
+
+# OS generated
+.DS_Store
+Thumbs.db
+
+# Migrations (optional: keep if you want migrations in git)
+# */migrations/*
+# !*/migrations/__init__.py
