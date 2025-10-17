@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 #folder for custom apps
 MODULES = [
     'core',
+    'studentprofile',
 
 ]
 # Application definition
@@ -196,3 +197,5 @@ SMS_PROVIDER_URL = os.environ.get("SMS_PROVIDER_URL")
 # system api key
 MY_API_KEY = os.environ.get("API_KEY")
 ENVIRONMENT = os.environ.get("ENVIRONMENT", "local")
+
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
