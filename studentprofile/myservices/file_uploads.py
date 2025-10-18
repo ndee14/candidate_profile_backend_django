@@ -1,3 +1,39 @@
+import PyPDF2
+from django.core.files.uploadedfile import UploadedFile
+
+def extract_text_from_pdf(file):
+    try:
+        # Handle both file paths and UploadedFile objects
+        if isinstance(file, UploadedFile):
+            file.seek(0)  # Reset file pointer
+            reader = PyPDF2.PdfReader(file)
+        else:
+            reader = PyPDF2.PdfReader(file)
+
+        text = ""
+        total_pages = len(reader.pages)
+
+        for i in range(total_pages):
+            page = reader.pages[i]
+            page_text = page.extract_text()
+
+            if page_text.strip():
+                text += f"--- Page {i + 1} ---\n{page_text}\n\n"
+            else:
+                text += f"--- Page {i + 1} ---\n[No extractable text found]\n\n"
+
+        # Check if any meaningful text was extracted
+        if text.strip() and not all('[No extractable text found]' in page for page in text.split('--- Page')[1:]):
+            return text.strip()
+        else:
+            return "This appears to be a scanned PDF or image-based PDF. Text extraction requires OCR software."
+
+    except PyPDF2.PdfReadError as e:
+        return f"Error reading PDF file: {str(e)}"
+    except Exception as e:
+        return f"Error extracting text: {str(e)}"
+
+
 def document_upload(request):
     file_fields = ['cv', 'academic_transcript', 'qualification1', 'qualification2', 'professional_photo']
 
@@ -10,7 +46,7 @@ def document_upload(request):
         file_name = document.name
         file_size = document.size
         
-        file_data = {
+        file_info = {
             'filename': file_name,
             'filepath': '',
             'size': file_size,
@@ -19,8 +55,8 @@ def document_upload(request):
 
         if file != 'professional_photo' and file_name.lower().endswith('.pdf'):
             print("Extracting text from PDF:", file_name)
-            # extracted_text = extract_text_from_pdf(file_info['filepath'])
-            # file_info['extracted_text'] = extracted_text
+            extracted_text = extract_text_from_pdf(document)
+            file_info['extracted_text'] = extracted_text
 
         # uploaded_files[file] = file_info
 
