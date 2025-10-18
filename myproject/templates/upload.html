@@ -318,17 +318,16 @@
         </div>
 
         <!-- Flash Messages -->
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <div class="flash-messages">
-                    {% for message in messages %}
-                        <div class="flash-message">
-                            <i class="fas fa-exclamation-circle"></i> {{ message }}
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
+        {% if messages %}
+    <div class="flash-messages">
+        {% for message in messages %}
+            <div class="flash-message {{ message.tags }}">
+                <i class="fas fa-exclamation-circle"></i> {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
 
         <!-- Upload Card -->
         <div class="upload-card">
