@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindWorx - Candidate Profile Generator</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-orange: #FF6B35;
+            --secondary-orange: #FF8C42;
+            --dark-orange: #E65C2F;
+            --light-orange: #FFA570;
+            --cream: #FFF5EB;
+            --dark-gray: #2C3E50;
+            --light-gray: #ECF0F1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--cream) 0%, #FFFFFF 100%);
+            min-height: 100vh;
+            color: var(--dark-gray);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .upload-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--primary-orange);
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .upload-area {
+            border: 3px dashed var(--light-orange);
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: var(--cream);
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-orange);
+            background: #FFF0E0;
+            transform: translateY(-2px);
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            color: var(--primary-orange);
+            margin-bottom: 20px;
+        }
+
+        .upload-text {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--dark-gray);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .browse-btn {
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .browse-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        .file-list {
+            margin-top: 30px;
+        }
+
+        .file-item {
+            background: var(--light-gray);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+
+        .file-item:hover {
+            background: #E8F4FC;
+            transform: translateX(5px);
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-icon {
+            color: var(--primary-orange);
+            font-size: 1.2rem;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--dark-orange) 0%, var(--primary-orange) 100%);
+            color: white;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 30px auto;
+            width: 250px;
+            box-shadow: 0 8px 25px rgba(230, 92, 47, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(230, 92, 47, 0.5);
+        }
+
+        .submit-btn:disabled {
+            background: var(--light-gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .instructions {
+            background: linear-gradient(135deg, var(--light-gray) 0%, #FFFFFF 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+            border-left: 5px solid var(--primary-orange);
+        }
+
+        .instructions h3 {
+            color: var(--primary-orange);
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+
+        .instruction-list {
+            list-style: none;
+        }
+
+        .instruction-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .instruction-list li:last-child {
+            border-bottom: none;
+        }
+
+        .instruction-icon {
+            color: var(--primary-orange);
+            font-size: 1.2rem;
+            min-width: 25px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 50px;
+            border-top: 2px solid var(--light-orange);
+        }
+
+        .mindworx-logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-orange);
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(255, 107, 53, 0.2);
+        }
+
+        .copyright {
+            color: var(--dark-gray);
+            opacity: 0.8;
+        }
+
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+
+        .flash-message {
+            background: linear-gradient(135deg, #FF4757 0%, #FF6B7C 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .upload-card {
+                padding: 25px;
+            }
+
+            .upload-area {
+                padding: 25px;
+            }
+
+            .submit-btn {
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+
+        /* Animation for file upload */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .uploading {
+            animation: pulse 2s infinite;
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--light-gray);
+            border-radius: 3px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">📄 TalentHub</div>
+            <div class="tagline">Transform documents into professional candidate profiles</div>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <div class="flash-message">
+                            <i class="fas fa-exclamation-circle"></i> {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Upload Card -->
+        <div class="upload-card">
+            <h2 class="section-title">
+                <i class="fas fa-cloud-upload-alt"></i> Upload Your Documents
+            </h2>
+
+            <form method="POST" action="/upload" enctype="multipart/form-data" id="uploadForm">
+                <!-- CV Upload -->
+                <div class="upload-area" onclick="document.getElementById('cv').click()">
+                    <div class="upload-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="upload-text">
+                        <h3>Curriculum Vitae (CV)</h3>
+                        <p>Click to upload your CV or drag and drop PDF file</p>
+                    </div>
+                    <input type="file" id="cv" name="cv" accept=".pdf" class="file-input" required>
+                    <button type="button" class="browse-btn">Browse Files</button>
+                </div>
+
+                <!-- Academic Transcript -->
+                <div class="upload-area" onclick="document.getElementById('academic_transcript').click()">
+                    <div class="upload-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="upload-text">
+                        <h3>Academic Transcript</h3>
+                        <p>Click to upload your academic transcript</p>
+                    </div>
+                    <input type="file" id="academic_transcript" name="academic_transcript" accept=".pdf" class="file-input" required>
+                    <button type="button" class="browse-btn">Browse Files</button>
+                </div>
+
+                <!-- Professional Photo -->
+                <div class="upload-area" onclick="document.getElementById('professional_photo').click()">
+                    <div class="upload-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <div class="upload-text">
+                        <h3>Professional Photo</h3>
+                        <p>Click to upload your professional headshot</p>
+                    </div>
+                    <input type="file" id="professional_photo" name="professional_photo" accept=".png,.jpg,.jpeg" class="file-input" required>
+                    <button type="button" class="browse-btn">Browse Files</button>
+                </div>
+
+                <!-- Additional Qualifications -->
+                <div class="upload-area" onclick="document.getElementById('qualification1').click()">
+                    <div class="upload-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <div class="upload-text">
+                        <h3>Additional Qualifications (Optional)</h3>
+                        <p>Click to upload certificates or other qualifications</p>
+                    </div>
+                    <input type="file" id="qualification1" name="qualification1" accept=".pdf" class="file-input">
+                    <button type="button" class="browse-btn">Browse Files</button>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <i class="fas fa-rocket"></i> Generate Profile
+                </button>
+            </form>
+        </div>
+
+        <!-- Instructions -->
+        <div class="instructions">
+            <h3><i class="fas fa-lightbulb"></i> Upload Guidelines</h3>
+            <ul class="instruction-list">
+                <li>
+                    <span class="instruction-icon"><i class="fas fa-check-circle"></i></span>
+                    <span>CV should be in PDF format with clear text</span>
+                </li>
+                <li>
+                    <span class="instruction-icon"><i class="fas fa-check-circle"></i></span>
+                    <span>Academic transcript must be legible and complete</span>
+                </li>
+                <li>
+                    <span class="instruction-icon"><i class="fas fa-check-circle"></i></span>
+                    <span>Professional photo should be high-quality and recent</span>
+                </li>
+                <li>
+                    <span class="instruction-icon"><i class="fas fa-check-circle"></i></span>
+                    <span>Maximum file size: 16MB per document</span>
+                </li>
+                <li>
+                    <span class="instruction-icon"><i class="fas fa-check-circle"></i></span>
+                    <span>Supported formats: PDF, PNG, JPG, JPEG</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Footer with MindWorx Logo -->
+        <div class="footer">
+            <div class="mindworx-logo">
+                <i class="fas fa-brain"></i> MindWorx
+            </div>
+            <div class="copyright">
+                © 2024 MindWorx - Talent Acquisition Solutions. All rights reserved.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // File input handling
+        document.querySelectorAll('.file-input').forEach(input => {
+            input.addEventListener('change', function(e) {
+                const fileName = this.files[0]?.name;
+                if (fileName) {
+                    const area = this.closest('.upload-area');
+                    area.querySelector('.upload-text p').textContent = `Selected: ${fileName}`;
+                    area.style.borderColor = '#27ae60';
+                    area.style.background = '#E8F5E8';
+                }
+            });
+        });
+
+        // Form submission handling
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            submitBtn.classList.add('uploading');
+
+            // Add progress bar (simulated)
+            const progressBar = document.createElement('div');
+            progressBar.className = 'progress-bar';
+            progressBar.innerHTML = '<div class="progress-fill" style="width: 0%"></div>';
+            submitBtn.parentNode.insertBefore(progressBar, submitBtn.nextSibling);
+
+            // Simulate progress
+            let width = 0;
+            const interval = setInterval(() => {
+                width += 5;
+                progressBar.querySelector('.progress-fill').style.width = width + '%';
+                if (width >= 100) {
+                    clearInterval(interval);
+                }
+            }, 100);
+        });
+
+        // Drag and drop functionality
+        document.querySelectorAll('.upload-area').forEach(area => {
+            area.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.style.borderColor = 'var(--primary-orange)';
+                this.style.background = '#FFF0E0';
+            });
+
+            area.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                this.style.borderColor = 'var(--light-orange)';
+                this.style.background = 'var(--cream)';
+            });
+
+            area.addEventListener('drop', function(e) {
+                e.preventDefault();
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    const input = this.querySelector('.file-input');
+                    input.files = files;
+                    const event = new Event('change');
+                    input.dispatchEvent(event);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
